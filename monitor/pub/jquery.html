@@ -1,0 +1,84 @@
+<!DOCTYPE html>  
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>jquery test</title>      
+    <link   type="text/css" rel="stylesheet" href="/static/libs/jquery-ui/css/smoothness/jquery-ui-1.8.18.custom.css"></link>
+	<link rel="stylesheet" type="text/css" href="/static/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="/static/themes/icon.css">	
+	<script src="/static/libs/jquery-ui/js/jquery-1.7.1.min.js"></script>
+	<script src="/static/libs/jquery.easyui.min.js"></script>
+    <script src="/static/libs/jquery-ui/js/jquery-ui-1.8.18.custom.min.js"></script>	
+	<script src="/static/scripts/room.js"></script>
+	<script src="/static/scripts/server.js"></script>
+<style>
+body{font-size:12px;}
+textarea{width:170px;height:55px;;}
+.room_icon {border:1px solid #ccc;height:135px;width:176px;float:left;overflow:hidden;font-size:85%;font-weight:bold;}
+.room_icon .title{ height:16px;border-bottom:1px solid #ddd;}
+.room_icon .body{height:100px;}
+.room_icon .body form{margin:0px;padding:0px;}
+.room_icon .toolbar{height:16px;visibility: hidden;padding-left:10px;}
+.room_icon .toolbar span{cursor: pointer;margin-right:10px;}
+.warnone{background-color:#F00;}
+.warntwo{background-color:#FF0;}
+
+.serverIcon{height:100px;width:176px;}
+
+</style>
+</head>
+<script>
+$(document.body).ready(function(){
+
+	var url = '/handleRoom.php?action=showRoom';
+	
+	$.post(url,function(roomBack){		
+		if(roomBack.length==0){
+			alert('还没有机房,请先添加机房!');			
+			return;
+		}		
+		var room  = new roomMgr.load(roomBack);		
+	},"json");
+	
+    $('span.button').button();	
+	
+	//对机房的增加操作
+    var roomMgr = new RoomMgr('container');	
+	
+    $('#add-room').click(function(){	
+		if($('#add-server').css('display')!='none'){
+			$('#add-server').css('display','none');
+			$('#container').show();
+		}else{		
+			var room = roomMgr.newAdd();
+		}			
+	});	
+		
+	//对机器的增加操作	
+	$('#Mgr-server').click(function(){
+		var server = new ServerMgr('serverMgr');
+		var server =  server.sNewAdd();
+	});	
+	
+	$('#add-server').click(function(){
+		
+	});
+	
+});
+</script>
+
+<body >
+    <div id="nav" class="" style="">        
+		<span class="button" id= "add-room"    href="javascript:;">添加机房</span>&nbsp;|&nbsp;
+		<span class="button" id= "Mgr-server"  href="javascript:;">机器管理</span>&nbsp;|&nbsp;
+		<span class="button" id= "add-server"  href="javascript:;" style="display:none;">添加机器</span>
+		<span class="button" id= "businessId" href="javascript:;" >业务管理</span>&nbsp;|&nbsp;
+		<span class="button" id= "ItemId" href="javascript:;" >监控项管理</span>&nbsp;&nbsp;
+	</div>	
+	<div id="container" class="ui-corner-all ui-widget-content" style=""></div>
+	<div class="bigRoom" style="display ='none;"></div>
+	<div class='sureDiv'></div>
+	<div id = "edit" ></div>
+	<div id = "serverMgr" class="ui-corner-all ui-widget-content" style="display:none;" ></div>
+</body>
+</html>
