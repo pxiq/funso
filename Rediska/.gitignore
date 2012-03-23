@@ -1,0 +1,9 @@
+.idea
+.buildpath
+.project
+.settings
+.DS_Store
+nbproject
+*.tgz
+tests/config.ini
+library/Zend
